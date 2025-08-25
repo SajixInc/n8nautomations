@@ -1,0 +1,127 @@
+{
+  "name": "My workflow 15",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        40,
+        0
+      ],
+      "id": "05b8dc1f-9a0f-4495-9edc-bae55f4a3830",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "kSQ6nTHLoXFXf5wL",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "listId": "68a40879ce614781fb5bf393",
+        "name": "={{ $json.Subject }}  \n\n{{ $json.labels[0].name }}",
+        "description": "={{ $json.snippet }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        540,
+        -20
+      ],
+      "id": "35eb83e6-7485-48f3-a9d7-6e6063e80ade",
+      "name": "Trello",
+      "credentials": {
+        "trelloApi": {
+          "id": "Ii3Lqv2RTs1Y3EvL",
+          "name": "Trello account 12"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6729d828-8ecf-44b1-af2b-b2d3e205232e",
+              "leftValue": "={{$json[\"Subject\"]}}\n",
+              "rightValue": "=(Support Request|Support|Help Desk|Issue|Bug)",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "f9d10e4a-cce9-4a33-b2e6-dde44ef01ee2",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Trello",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trello": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8a294581-5817-4d1f-a7e5-c278f9a32d44",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dd95863389efa9620db709de91028077b415d1599314791aead2aff6454ed274"
+  },
+  "id": "0OWPKsqd4dEO0PZW",
+  "tags": []
+}
