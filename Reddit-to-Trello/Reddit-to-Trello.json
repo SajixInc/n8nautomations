@@ -1,0 +1,106 @@
+{
+  "name": "My workflow 27",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "befdab87-e28c-4b1f-b846-fde9459aa8cc",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "subreddit": "marketing",
+        "limit": 1,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "b8a7df9d-527f-4787-a646-f92e4002bf82",
+      "name": "Reddit",
+      "alwaysOutputData": true,
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "pdYMLo1G1mzoI4xn",
+          "name": "Reddit account 7"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "listId": "68a8304d915444572b3002d6",
+        "name": "={{ $json.subreddit }}\n\n",
+        "description": "=👤 User:{{ $json.subreddit }}\n📝 Title:{{ $json.title }}\n📅 Posted on: {{ new Date($json[0].created_utc * 1000).toLocaleString() }}\n",
+        "additionalFields": {
+          "urlSource": "https://www.reddit.com/user/Specific_Speech_1671/comments/1mx3f6b/speech/?utm_source[…]m=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button",
+          "keepFromSource": "all"
+        }
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        740,
+        0
+      ],
+      "id": "8dc08313-b92b-41a3-9300-be2cc8c2d135",
+      "name": "Trello",
+      "credentials": {
+        "trelloApi": {
+          "id": "uOs2oE0ulgBXwVRO",
+          "name": "Trello account 30"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Test workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit": {
+      "main": [
+        [
+          {
+            "node": "Trello",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c8acede4-d0c7-47eb-9d0d-a6d387d0c346",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dd95863389efa9620db709de91028077b415d1599314791aead2aff6454ed274"
+  },
+  "id": "enTipwo4Qi9Fkbkg",
+  "tags": []
+}
