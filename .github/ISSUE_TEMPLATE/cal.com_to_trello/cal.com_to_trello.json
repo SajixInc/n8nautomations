@@ -1,0 +1,80 @@
+{
+  "name": "Sai",
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CREATED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        -180
+      ],
+      "id": "7cd94e36-4f97-4817-987c-a34277c28775",
+      "name": "Cal.com Trigger",
+      "webhookId": "4c3e0294-9762-443c-a765-f25a16f512f8",
+      "credentials": {
+        "calApi": {
+          "id": "Wn6xhogWtHY62i9J",
+          "name": "Cal account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "listId": "68a2c3daf0008df746e823f3",
+        "name": "=Name:-{{ $json.attendees[0].name }}\nBooking Date:-{{ $json.createdAt }}\nStart Time:-{{ $json.startTime }}\nEnd Time:-{{ $json.endTime }}\n",
+        "description": "={{ $json.attendees[0].name }} \n{{ $json.attendees[0].email }}\n{{ $json.attendees[0].timeZone }}\n{{ $json.attendees[0].name }}{{ $json.description }}\n\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -180
+      ],
+      "id": "8404c40e-ef2b-4c77-8b4d-9598533ac903",
+      "name": "Trello1",
+      "credentials": {
+        "trelloApi": {
+          "id": "1mNDcJqHdmlzfoGE",
+          "name": "Trello account 21"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Cal.com Trigger": {
+      "main": [
+        [
+          {
+            "node": "Trello1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trello1": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fd62d6b8-884b-4a57-af0c-5718aaed28cf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dd95863389efa9620db709de91028077b415d1599314791aead2aff6454ed274"
+  },
+  "id": "fUpYP799SwQ1afTu",
+  "tags": []
+}
