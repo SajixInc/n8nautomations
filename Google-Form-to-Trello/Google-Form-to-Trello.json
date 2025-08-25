@@ -1,0 +1,165 @@
+{
+  "name": "syam",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1hsPrqRmZwgc4iOCSAEpcn3BAnQrS7eicxegptembYcQ",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "777471783",
+          "mode": "id"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -360,
+        40
+      ],
+      "id": "5d1a10de-ab80-4d78-b93f-85d626f4bdd7",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "oEHfGGntX02xMvMH",
+          "name": "Google Sheets Trigger account 20"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "listId": "68a423ddad49e376c7c2f37f",
+        "name": "={{ $('Google Sheets Trigger').item.json['First Name'] }}{{ $('Google Sheets Trigger').item.json['Second Name'] }}--{{ $('Google Sheets Trigger').item.json.Role }}\n ",
+        "description": "={{ $json.Category }}\n{{ $json.LabelId }}\n\n👤 Name: {{ $('Google Sheets Trigger').item.json['First Name'] }}{{ $('Google Sheets Trigger').item.json['Second Name'] }}\n📧 Email: {{ $('Google Sheets Trigger').item.json.Gmail }}\n📞 Phone:  {{ $('Google Sheets Trigger').item.json['Phone Number'] }}\n🎂 DOB:  {{ $('Google Sheets Trigger').item.json['Date of Birth'] }}\n👨 Gender: {{ $('Google Sheets Trigger').item.json['Gender '] }}\n🏠 Address:  {{ $('Google Sheets Trigger').item.json['Address '] }}\n🏢 Company: {{ $('Google Sheets Trigger').item.json.Company }}\n💼 Role:  {{ $('Google Sheets Trigger').item.json.Role }}\n📈 Experience: {{ $('Google Sheets Trigger').item.json['Experiences '] }}\n🏷️ Category: {{ $('Google Sheets Trigger').item.json.Category }}\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        80,
+        40
+      ],
+      "id": "ee7c8b92-5d57-4c84-bbb2-4c1bc89c656a",
+      "name": "Trello",
+      "credentials": {
+        "trelloApi": {
+          "id": "pn4HzVHEExittzVq",
+          "name": "Trello account 14"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "label",
+        "boardId": {
+          "__rl": true,
+          "value": "nNQZwEkb",
+          "mode": "id"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        300,
+        40
+      ],
+      "id": "67d2930a-32ad-49e9-b3d5-6f506dfbb9f5",
+      "name": "Trello1",
+      "credentials": {
+        "trelloApi": {
+          "id": "8J4E6jFEaMP6uttI",
+          "name": "Trello account 31"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a35c771-4f01-4418-b79a-180994b1bae8",
+              "name": "Category",
+              "value": "={{ $json[\"Category\"].trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "266c4751-216e-431e-88ab-90b9c0603487",
+              "name": "LabelId",
+              "value": "={{ \n  $json[\"Category\"].trim() === \"Bug Report\" ? \"68a423d0d91c66a8f9416f68\" :\n  $json[\"Category\"].trim() === \"Feature Request\" ? \"68a4240a3917d85b92a8f9c1\" :\n  $json[\"Category\"].trim() === \"Customer Support\" ? \"68a423d0d91c66a8f9416f68\" :\n  $json[\"Category\"].trim() === \"Feedback\" ? \"68a4240a3917d85b92a8f9c1\" :\n  \"\"\n}}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -140,
+        40
+      ],
+      "id": "aa630746-57da-4d1f-ba5c-c9b69b60e941",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trello": {
+      "main": [
+        [
+          {
+            "node": "Trello1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Trello",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "98c1828b-456e-4a7f-9015-9714e2796e08",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dd95863389efa9620db709de91028077b415d1599314791aead2aff6454ed274"
+  },
+  "id": "DPVPT4lm41Pcoqgi",
+  "tags": []
+}
