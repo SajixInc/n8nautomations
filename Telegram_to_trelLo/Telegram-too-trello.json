@@ -1,0 +1,107 @@
+{
+  "name": "My workflow 29",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -420,
+        -1000
+      ],
+      "id": "276caa09-dea6-41d9-9dcb-d1094be15a89",
+      "name": "Telegram Trigger",
+      "webhookId": "9bba183f-2b47-416c-82d3-97acb873a35c",
+      "credentials": {
+        "telegramApi": {
+          "id": "ly0xM2evPoMyOPbl",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "listId": "68a5b548a28debb80f3c0209",
+        "name": "=🆔 Message ID: {{ $json.message.message_id }}\n👤 User: {{ $json.message.chat.first_name }}\n💬 Message: {{ $json.message.text }}\n📅 Date: {{ new Date().toISOString() }}\n\n",
+        "description": "=Created by Telegram User :  {{ $json.message.chat.first_name }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -1000
+      ],
+      "id": "466db6cb-ca35-4ea0-ac96-40afde3b7f57",
+      "name": "Trello",
+      "credentials": {
+        "trelloApi": {
+          "id": "ddMg379D06xAbVnu",
+          "name": "Trello account 32"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}\n{{ $('Telegram Trigger').item.json.message }}\n{{ $('Telegram Trigger').item.json.message.chat }}",
+        "text": "=\n✅ Trello card created!\nTitle: {{$json[\"name\"]}}\nLink: {{$json[\"shortUrl\"]}}\n\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        -1000
+      ],
+      "id": "23e03910-6949-4b36-b43e-592700239ff4",
+      "name": "Telegram",
+      "credentials": {
+        "telegramApi": {
+          "id": "ly0xM2evPoMyOPbl",
+          "name": "Telegram account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Trello",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trello": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fdc6b731-bd0d-4396-b307-f43bc3e5a9e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dd95863389efa9620db709de91028077b415d1599314791aead2aff6454ed274"
+  },
+  "id": "x0BxkNFjw6SEBMyG",
+  "tags": []
+}
