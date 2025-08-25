@@ -1,0 +1,284 @@
+{
+    "name": "GitHub to Trello Sync",
+    "nodes": [
+      {
+        "parameters": {
+          "owner": {
+            "__rl": true,
+            "value": "lalithkumar213",
+            "mode": "name"
+          },
+          "repository": {
+            "__rl": true,
+            "value": "sync-github-to-trello",
+            "mode": "list",
+            "cachedResultName": "sync-github-to-trello",
+            "cachedResultUrl": "https://github.com/lalithkumar213/sync-github-to-trello"
+          },
+          "events": [
+            "issues",
+            "label"
+          ],
+          "options": {}
+        },
+        "type": "n8n-nodes-base.githubTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "0926ff8c-9081-4b31-933c-8428e1c8afc6",
+        "name": "Github Trigger",
+        "webhookId": "f17ee3c5-0629-4f31-92e5-85e48265bfa8",
+        "credentials": {
+          "githubApi": {
+            "id": "fxGYbwd8cIl9SmJu",
+            "name": "GitHub account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "de4f2c3c-4623-4e5e-9a75-91555b83d0e1",
+                "name": "issue No :",
+                "value": "={{ $json.body.issue.number }}",
+                "type": "number"
+              },
+              {
+                "id": "01a04d5b-4173-4f69-b5bc-26e1b0f15164",
+                "name": "issue title :",
+                "value": "={{ $json.body.issue.title }}",
+                "type": "string"
+              },
+              {
+                "id": "c51820af-0670-4209-8363-569926dc618a",
+                "name": "action:",
+                "value": "={{ $json.body.action }}",
+                "type": "string"
+              },
+              {
+                "id": "4393b276-13f7-4247-bbfc-9a5d53be7649",
+                "name": "labels :",
+                "value": "={{ $json.body.issue.labels }}",
+                "type": "array"
+              },
+              {
+                "id": "59d65b7f-28a0-49d9-a3c4-12ce9ca982d3",
+                "name": "description :",
+                "value": "={{ $json.body.issue.body }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          208,
+          0
+        ],
+        "id": "eb6fd804-f686-4887-a6c4-1dbe0ec68503",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json[\"action:\"] }}",
+                      "rightValue": "opened",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "2a1d3fc2-abe8-41cd-b684-2f950a207350"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "opened"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6d71cb63-0b00-4ac5-8eb1-b8742ef763b6",
+                      "leftValue": "={{ $json[\"action:\"] }}",
+                      "rightValue": "reopened",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "reopened"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "4fb4e4e5-1ec1-422a-a6c3-ffa1495444c0",
+                      "leftValue": "={{ $json[\"action:\"] }}",
+                      "rightValue": "closed",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "closed"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          416,
+          0
+        ],
+        "id": "0ba7c27c-9ec2-43ae-890f-a40111265806",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "listId": "68a45f3815b06b4cc970751d",
+          "name": "={{ $json[\"issue title :\"] }}\n#{{ $json[\"issue No :\"] }}\nISSUE:{{ $json[\"action:\"] }}",
+          "description": "=action : {{ $json[\"action:\"] }}\n{{ $json[\"description :\"] }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.trello",
+        "typeVersion": 1,
+        "position": [
+          816,
+          -32
+        ],
+        "id": "3a373b5c-fb36-4df7-b4b3-002458543de7",
+        "name": "Opened / Reopened issues",
+        "credentials": {
+          "trelloApi": {
+            "id": "PTzbMiVoFVQcp7qk",
+            "name": "Trello account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "listId": "68a45f3815b06b4cc970751e",
+          "name": "={{ $json[\"issue title :\"] }}\n#{{ $json[\"issue No :\"] }}\n ISSUE : {{ $json[\"action:\"] }}",
+          "description": "= Action :{{ $json[\"action:\"] }}\n{{ $json[\"description :\"] }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.trello",
+        "typeVersion": 1,
+        "position": [
+          816,
+          160
+        ],
+        "id": "b1da6950-aba3-4328-a1e6-1893a13df95c",
+        "name": "Closed issues",
+        "credentials": {
+          "trelloApi": {
+            "id": "PTzbMiVoFVQcp7qk",
+            "name": "Trello account 2"
+          }
+        }
+      }
+    ],
+    "pinData": {},
+    "connections": {
+      "Github Trigger": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Opened / Reopened issues",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Opened / Reopened issues",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Closed issues",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "active": true,
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "versionId": "976f490c-bfe0-4186-a344-736694aa21b2",
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "9fdb724ae5aae10359eddcbfcc7df79ae7965f14d549b1f21a702f3c393767eb"
+    },
+    "id": "dx9lzBg6ScfBI4Ot",
+    "tags": []
+  }
