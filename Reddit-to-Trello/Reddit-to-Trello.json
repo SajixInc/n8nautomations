@@ -14,31 +14,8 @@
     },
     {
       "parameters": {
-        "operation": "getAll",
-        "subreddit": "marketing",
-        "limit": 1,
-        "filters": {}
-      },
-      "type": "n8n-nodes-base.reddit",
-      "typeVersion": 1,
-      "position": [
-        220,
-        0
-      ],
-      "id": "b8a7df9d-527f-4787-a646-f92e4002bf82",
-      "name": "Reddit",
-      "alwaysOutputData": true,
-      "credentials": {
-        "redditOAuth2Api": {
-          "id": "pdYMLo1G1mzoI4xn",
-          "name": "Reddit account 7"
-        }
-      }
-    },
-    {
-      "parameters": {
         "listId": "68a8304d915444572b3002d6",
-        "name": "={{ $json.subreddit }}\n\n",
+        "name": "={{ $json.subreddit }}\n{{ $json.post_hint }}\n\n",
         "description": "=👤 User:{{ $json.subreddit }}\n📝 Title:{{ $json.title }}\n📅 Posted on: {{ new Date($json[0].created_utc * 1000).toLocaleString() }}\n",
         "additionalFields": {
           "urlSource": "https://www.reddit.com/user/Specific_Speech_1671/comments/1mx3f6b/speech/?utm_source[…]m=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button",
@@ -48,7 +25,7 @@
       "type": "n8n-nodes-base.trello",
       "typeVersion": 1,
       "position": [
-        740,
+        960,
         0
       ],
       "id": "8dc08313-b92b-41a3-9300-be2cc8c2d135",
@@ -59,6 +36,22 @@
           "name": "Trello account 30"
         }
       }
+    },
+    {
+      "parameters": {
+        "resource": "user",
+        "username": "Specific_Speech_1671",
+        "details": "overview",
+        "limit": 1
+      },
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "a09d91e0-33f5-407a-91c0-b2246810453f",
+      "name": "Reddit1"
     }
   ],
   "pinData": {
@@ -73,14 +66,14 @@
       "main": [
         [
           {
-            "node": "Reddit",
+            "node": "Reddit1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Reddit": {
+    "Reddit1": {
       "main": [
         [
           {
